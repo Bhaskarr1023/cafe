@@ -66,6 +66,10 @@
   /* Focus Indicators */
   --focus-outline: 2px solid var(--color-forest-green);
   --focus-offset: 2px;
+
+  /* Fixed Navigation Offset */
+  --navbar-height: 44px;
+  --navbar-offset: 80px;
 }
 
 /* --------------------------------------------------------------------------
@@ -80,11 +84,25 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   min-height: 100%;
   width: 100%;
   overflow-x: hidden;
+}
+
+/* Anchored full-width sections align with viewport top (they provide their own internal top clearance) */
+section[id] {
+  scroll-margin-top: 0;
+}
+
+/* Sub-elements with IDs (e.g. headings or inner anchors) offset for the fixed navbar */
+[id]:not(section) {
+  scroll-margin-top: var(--navbar-offset, 80px);
 }
 
 body {

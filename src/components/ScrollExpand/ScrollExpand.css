@@ -1,0 +1,252 @@
+/* ==========================================================================
+   Greedy's Cafe — Refined Website Preview Reveal
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Stage Container
+   -------------------------------------------------------------------------- */
+
+.reveal-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-ivory, #FAF7F0);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* When reveal completes, stage settles into normal document flow */
+.reveal-stage--completed {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 1;
+  user-select: auto;
+  transform: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   The Compact Centered Preview Card
+   -------------------------------------------------------------------------- */
+
+.preview-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 58%;
+  height: 64%;
+  border-radius: 20px;
+  background-color: var(--color-forest-green, #263D32);
+  border: 1px solid rgba(38, 61, 50, 0.12);
+  box-shadow: 0 20px 60px -15px rgba(41, 45, 41, 0.2);
+  overflow: hidden;
+  will-change: width, height, border-radius, box-shadow;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal-stage--completed .preview-card {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Background Media & Scrim inside Card */
+.preview-card__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.preview-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(38, 61, 50, 0.55) 0%,
+    rgba(38, 61, 50, 0.3) 40%,
+    rgba(38, 61, 50, 0.65) 100%
+  );
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   The ONE and ONLY Navbar Slot (Inside card at start, fixed once completed)
+   -------------------------------------------------------------------------- */
+
+.preview-card__nav-slot {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-md) var(--container-padding);
+  width: 100%;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.preview-card__nav-slot .pill-nav {
+  pointer-events: auto;
+}
+
+/* Fixed viewport positioning once reveal completes */
+.reveal-stage--completed .preview-card__nav-slot {
+  position: fixed;
+  top: var(--space-md);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 var(--container-padding);
+  pointer-events: none;
+}
+
+.reveal-stage--completed .preview-card__nav-slot .pill-nav {
+  pointer-events: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Centered Cafe Name
+   -------------------------------------------------------------------------- */
+
+.preview-card__center {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.preview-card__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-ivory, #FAF7F0);
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(38, 61, 50, 0.7);
+  margin: 0;
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   Subtle Scroll Cue (Outside the Preview Card at Viewport Bottom)
+   -------------------------------------------------------------------------- */
+
+.reveal-stage__cue {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-forest-green, #263D32);
+  opacity: 0.85;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  will-change: opacity;
+}
+
+.reveal-stage__cue-arrow {
+  width: 14px;
+  height: 14px;
+  animation: seCueBounce 2s ease-in-out infinite;
+}
+
+@keyframes seCueBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Responsiveness
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .preview-card {
+    width: 86%;
+    height: 72%;
+    border-radius: 16px;
+  }
+
+  .preview-card__title {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-stage {
+    position: relative !important;
+    inset: auto !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    user-select: auto !important;
+    transform: none !important;
+  }
+
+  .preview-card {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .preview-card__nav-slot {
+    position: fixed !important;
+    top: var(--space-md) !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 100 !important;
+    padding: 0 var(--container-padding) !important;
+    pointer-events: none !important;
+  }
+
+  .preview-card__nav-slot .pill-nav {
+    pointer-events: auto !important;
+  }
+
+  .reveal-stage__cue {
+    display: none !important;
+  }
+}
